@@ -72,5 +72,3 @@ if [ "$1" == 'master.txt' ]; then
     echo "The master failed to apply its role."
   fi
 fi
-
-sudo /opt/puppet/bin/puppet agent -t
