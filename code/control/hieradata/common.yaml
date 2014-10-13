@@ -1,0 +1,5 @@
+---
+message: "This is our common yaml file"
+ntpservers:
+ - north-america.pool.ntp.org
+ - ntp.lucier.net

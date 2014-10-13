@@ -1,0 +1,17 @@
+# Vim
+.*.sw[a-z]
+*.un~i
+tags
+
+# OSX
+.DS_Store
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+
+# Vagrant
+.vagrant
+
+install_log*
+puppet-enterprise-*
