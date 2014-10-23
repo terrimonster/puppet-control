@@ -1,69 +1,35 @@
 class profile::puppet::master (
     $hiera_eyaml = false,
     $autosign = false,
-    $remote = "git@github.com:terrimonster/puppet-control.git"
+    $remote = "git@github.com:terrimonster/puppet-control.git",
+    $environmentpath = "${::settings::confdir}/environments",
+    $basemodulepath = "${::settings::confdir}/modules:/opt/puppet/share/puppet/modules",
+    $hieradir = "${::settings::confdir}/environments/%{environment}/hieradata",
 ) {
   validate_string($remote)
   validate_bool($hiera_eyaml,$autosign)
-  if $hiera_eyaml {
-    ## The hiera-eyaml config. This is added via the hiera class below.
-    $hiera_config = [':eyaml:',
-    "  :datadir: \"${::settings::confdir}/environments/%{environment}/hieradata\"",
 
-    "  :pkcs7_private_key: ${::settings::confdir}/keys/private_key.pkcs7.pem",
-    "  :pkcs7_public_key: ${::settings::confdir}/keys/public_key.pkcs7.pem",
-    '  :extension: "yaml"',
-    ]
-
-    package { 'hiera-eyaml':
-      ensure   => 'installed',
-      provider => 'pe_gem',
-    }
-
-    file { 'keys_dir':
-      ensure => 'directory',
-      path   => "${::settings::confdir}/keys",
-      owner  => 'pe-puppet',
-      group  => 'pe-puppet',
-      mode   => '0700',
-    }
-
-    ## Create an example keypair for hiera-eyaml demo
-    exec { 'create_eyaml_keys':
-      path    => [ '/opt/puppet/bin' ],
-      command => 'eyaml createkeys',
-      creates => "${::settings::confdir}/keys/private_key.pkcs7.pem",
-      cwd     => $::settings::confdir,
-      require => [ Package['hiera-eyaml'], File['keys_dir'] ],
-    }
-    $backends = ['eyaml', 'yaml']
-  } else {
-    $backends = ['yaml']
-  }
   class { 'hiera':
     hierarchy => [
       'nodes/%{fqdn}',
       'env/%{environment}',
       'common',
     ],
-    datadir      => "${::settings::confdir}/environments/%{environment}/hieradata",
-    backends     => $backends,
-    extra_config => $hiera_eyaml ? {
-      true    => join($hiera_config, "\n"),
-      false => '',
-      default => ''},
-    notify       => Service['pe-httpd'],
+    datadir   => $hieradir,
+    backends  => $backends,
+    eyaml     => $hiera_eyaml,
+    notify    => Service['pe-httpd'],
   }
 
   class { 'r10k':
     sources  => {
       'control' => {
         'remote'  => $remote,
-        'basedir' => "${::settings::confdir}/environments",
+        'basedir' => $environmentpath,
         'prefix'  => false,
       },
     },
-    purgedirs         => ["${::settings::confdir}/environments" ],
+    purgedirs         => [$environmentpath],
     manage_modulepath => false,
     mcollective       => false,
     notify            => Service['pe-httpd'],
@@ -75,7 +41,7 @@ class profile::puppet::master (
     path    => '/etc/puppetlabs/puppet/autosign.conf',
   }
 
-  file { "${::settings::confdir}/environments":
+  file { $environmentpath :
     ensure => 'directory',
     owner  => 'root',
     group  => 'root',
@@ -86,7 +52,7 @@ class profile::puppet::master (
     path    => "${::settings::confdir}/puppet.conf",
     section => 'main',
     setting => 'basemodulepath',
-    value   => "${::settings::confdir}/modules:/opt/puppet/share/puppet/modules",
+    value   => $basemodulepath,
     notify  => Service['pe-httpd'],
   }
 
@@ -95,7 +61,7 @@ class profile::puppet::master (
     path    => "${::settings::confdir}/puppet.conf",
     section => 'main',
     setting => 'environmentpath',
-    value   => "${::settings::confdir}/environments",
+    value   => $environmentpath,
     notify  => Service['pe-httpd'],
   }
 

@@ -50,12 +50,17 @@ if [ "$1" == 'master.txt' ]; then
   /opt/puppet/bin/gem install r10k
 
   ## Use the control repo for bootstrapping
-  mkdir -p /etc/puppetlabs/puppet/environments
-  ln -s /vagrant/code/control /etc/puppetlabs/puppet/environments/production
-  cd /etc/puppetlabs/puppet/environments/production/
+  mkdir -p /etc/puppetlabs/puppet/environments/production
+  cp -r /vagrant/code/control/ /etc/puppetlabs/puppet/environments/production
+  cd /etc/puppetlabs/puppet/environments/production
   /opt/puppet/bin/r10k puppetfile install -v
 
-  /opt/puppet/bin/puppet apply -e 'include profile::puppet::master' \
+  ## Run a Puppet apply against the role in the copy of the control repo so we
+  ## can bootstrap
+  echo "======================================================================"
+  echo "Applying role::puppet::master"
+  echo
+  /opt/puppet/bin/puppet apply -e 'include role::puppet::master' \
     --modulepath=./modules:./site
 
   if [ $? -eq 0 ]; then
