@@ -74,19 +74,16 @@ Password: `password`
 
 **Bring up all the nodes in the Vagrant environment:**
 
-```shell
+```
 vagrant up
 ```
-
-(optionally, just bring up the master, gitlab server, and whatever agent you
-want)
 
 This will take some time to provision.
 
 Ensure that the PE master is up and provisioned before attempting to start
 another system.
 
-The main things for demonstration:
+Stuff included:
 
 * Puppet Environments (control repository)
 * Roles and Profiles
@@ -95,6 +92,15 @@ The main things for demonstration:
 * Optionally, [hiera-eyaml](https://github.com/TomPoulton/hiera-eyaml)
 * [r10k](https://github.com/adrienthebo/r10k)
 * [trlinkin/noop](https://github.com/trlinkin/trlinkin-noop)
+
+Once everything is provisioned as you need it, you can ssh into the instance:
+
+```
+vagrant ssh xmaster
+```
+
+You will be logged in as user vagrant. Please sudo to root if you need to run puppet.
+
 
 ### 1. Install Puppet
 
