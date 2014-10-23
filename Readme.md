@@ -33,6 +33,9 @@ Contains site.pp
 ###### site
 Contains your organization-specific roles and profiles (wrappers for Forge component modules)
 
+### hooks/
+Git hooks for checking your Puppet code. There is a pre-commit you can copy to your .git/hooks repo directory. There is also a pre-receive for your git server. You must install puppet and puppet-lint (locally for pre-commit, on the git server for pre-receive) to use these hooks.
+
 ### provision/
 
 Contains the script and files that are used to spin up the Vagrant VM. This is different from the Vagrantfile in that these are more specific to what you want to happen with the specific instance. The pe/ directory contains answer files, and, after you spin up PE for the first time, will contain PE installation media, which are in .gitignore.
