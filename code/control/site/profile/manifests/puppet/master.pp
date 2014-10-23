@@ -12,6 +12,7 @@ class profile::puppet::master (
   class { 'hiera':
     hierarchy => [
       'nodes/%{fqdn}',
+      'appenv/%{appenv}',
       'env/%{environment}',
       'common',
     ],
