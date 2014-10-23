@@ -51,7 +51,7 @@ if [ "$1" == 'master.txt' ]; then
 
   ## Use the control repo for bootstrapping
   mkdir -p /etc/puppetlabs/puppet/environments/production
-  cp -r /vagrant/code/control/ /etc/puppetlabs/puppet/environments/production
+  cp -r /vagrant/code/control/* /etc/puppetlabs/puppet/environments/production
   cd /etc/puppetlabs/puppet/environments/production
   /opt/puppet/bin/r10k puppetfile install -v
 
