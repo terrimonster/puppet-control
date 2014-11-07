@@ -49,7 +49,8 @@ if [ "$1" == 'master.txt' ]; then
 
   mkdir -p /root/.ssh
 
-  cp /vagrant/provision/keys/r10k-control-repo-id_rsa /root/.ssh/r10k-control-repo-id
+  cp /vagrant/provision/keys/r10k-control-repo-id_rsa \
+    /root/.ssh/r10k-control-repo-id_rsa
 
   cp /vagrant/provision/keys/r10k-control-repo-id_rsa.pub \
     /root/.ssh/r10k-control-repo-id_rsa.pub
