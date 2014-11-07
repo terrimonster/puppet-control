@@ -68,6 +68,8 @@ if [ "$1" == 'master.txt' ]; then
     path=/etc/puppetlabs/puppet/puppet.conf section=main \
     setting=environmentpath value=/etc/puppetlabs/puppet/environments
 
+  service pe-httpd restart
+
   /opt/puppet/bin/puppet module install zack-r10k --modulepath \
     /etc/puppetlabs/puppet/modules --ignore-requirements
 
