@@ -45,35 +45,46 @@ fi
 ## Bootstrap the master
 if [ "$1" == 'master.txt' ]; then
 
-  ## Install some prerequisites
-  yum install -y git
-  /opt/puppet/bin/gem install r10k
+  ## deploy keys
+
+  mkdir -p /root/.ssh
+
+  cp /vagrant/provision/keys/r10k-control-repo-id_rsa /root/.ssh/r10k-control-repo-id
+
+  cp /vagrant/provision/keys/r10k-control-repo-id_rsa.pub \
+    /root/.ssh/r10k-control-repo-id_rsa.pub
+
+  cp /vagrant/provision/keys/config /root/.ssh/config
+
+  ###
+  chmod 600 /root/.ssh/r10k*
+  chmod 600 /root/.ssh/config
 
   ## Use the control repo for bootstrapping
-  mkdir -p /etc/puppetlabs/puppet/environments/production
-  cp -r /vagrant/code/control/* /etc/puppetlabs/puppet/environments/production
-  cd /etc/puppetlabs/puppet/environments/production
-  /opt/puppet/bin/r10k puppetfile install -v
+  mkdir -p /etc/puppetlabs/puppet/environments
 
-  ## Run a Puppet apply against the role in the copy of the control repo so we
-  ## can bootstrap
-  echo "======================================================================"
-  echo "Applying role::puppet::master"
-  echo
-  /opt/puppet/bin/puppet apply -e 'include role::puppet::master' \
-    --modulepath=./modules:./site
+  /opt/puppet/bin/puppet resource ini_setting environmentpath ensure=present \
+    path=/etc/puppetlabs/puppet/puppet.conf section=main \
+    setting=environmentpath value=/etc/puppetlabs/puppet/environments
 
-  if [ $? -eq 0 ]; then
-    if [ -f "/root/.ssh/id_rsa.pub" ]; then
-      echo "################################################################"
-      echo "Copy the following SSH pubkey to your clipboard:"
-      echo
-      cat /root/.ssh/id_rsa.pub
-      echo
-      echo "################################################################"
-      echo "This key should be added to your git server."
-    fi
-  else
-    echo "The master failed to apply its role."
-  fi
+  /opt/puppet/bin/puppet module install zack-r10k --modulepath \
+    /etc/puppetlabs/puppet/modules --ignore-requirements
+
+  cat > /tmp/newsite.pp <<EOM
+  class { 'r10k':
+    version => '1.3.4',
+    remote => 'git@github.com:terrimonster/puppet-control.git',
+  }
+EOM
+  echo "APPLYING R10K"
+  /opt/puppet/bin/puppet apply /tmp/newsite.pp \
+    --modulepath=/etc/puppetlabs/puppet/modules
+
+  /opt/puppet/bin/r10k deploy environment -p production --puppetfile \
+    --verbose debug
+
+  /opt/puppet/bin/puppet agent -t
+
+  echo "All done! Now ssh in using vagrant ssh xmaster and sudo to root!"
+
 fi

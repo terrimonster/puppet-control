@@ -1,5 +1,0 @@
----
-classes: role::puppet::master
-profile::puppet::master::autosign: true
-profile::puppet::master::basemodulepath: "/vagrant/code/control/site:/etc/puppetlabs/puppet/modules:/opt/puppet/share/puppet/modules"
-profile::puppet::master::hieradir: "/vagrant/code/control/hieradata"

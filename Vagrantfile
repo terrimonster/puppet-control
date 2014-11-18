@@ -81,7 +81,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       box_name = "#{node_details['box']}"
       node.vm.box = "#{box_name}"
       boxes.key?("#{box_name}") && node.vm.box_url = boxes[box_name]
-     
+
       # configure basic settings
       node.vm.hostname = node_details['hostname']
 
@@ -98,7 +98,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         end
       end
 
-      # configure synced folders 
+      # configure synced folders
       synced_folders = node_details['synced_folders']
       synced_folders && synced_folders.each do |synced_folder|
         node.vm.synced_folder synced_folder['host'], synced_folder['guest']
@@ -121,9 +121,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           node.vm.provision provisioner_type do |provision|
             provisioner_params.each do |key, value|
               if key == 'arguments'
-                provision.args = shell_provisioner_args(value) 
+                provision.args = shell_provisioner_args(value)
               else
-                provision.send("#{key}=", value) 
+                provision.send("#{key}=", value)
               end
             end
           end
@@ -136,7 +136,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       providers = node_details['providers']
       providers && providers.each do |provider_type, provider_params|
         node.vm.provider provider_type do |node_provider|
-           provider_params.each do |key, value| 
+           provider_params.each do |key, value|
              node_provider.send("#{key}=", value)
            end
         end
@@ -150,8 +150,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       node.vm.provider 'virtualbox' do |vb|
         vb.customize [ 'modifyvm', :id, '--memory', node_details['memory'] ]
         vb.customize [ 'modifyvm', :id, '--cpus', node_details['cpus'] ]
-        vb.customize [ 'modifyvm', :id, '--natdnshostresolver1', 'on']
-        vb.customize [ 'modifyvm', :id, '--natdnsproxy1', 'on']
+        vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+        vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
         vb.name = node_name
       end
       node.vm.provider 'vmware_fusion' do |vmf|
