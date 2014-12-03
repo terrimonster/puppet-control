@@ -1,11 +1,11 @@
-class profiles::puppet::master (
+class profile::puppet::master (
     $hiera_eyaml = false,
     $autosign = false,
     $environmentpath = "${::settings::confdir}/environments",
     $deploy_pub_key = "",
     $deploy_private_key = "",
     $r10k_version = '1.3.4',
-) inherits profiles::puppet::params {
+) inherits profile::puppet::params {
   validate_string($remote)
   validate_bool($hiera_eyaml,$autosign)
   File {
@@ -20,7 +20,7 @@ class profiles::puppet::master (
       'env/%{environment}',
       'global',
     ],
-    datadir   => $profiles::puppet::params::hieradir,
+    datadir   => $profile::puppet::params::hieradir,
     backends  => $backends,
     eyaml     => $hiera_eyaml,
     notify    => Service['pe-httpd'],
@@ -30,7 +30,7 @@ class profiles::puppet::master (
     version => $r10k_version,
     sources  => {
       'control' => {
-        'remote'  => $profiles::puppet::params::remote,
+        'remote'  => $profile::puppet::params::remote,
         'basedir' => $environmentpath,
         'prefix'  => false,
       },
@@ -60,7 +60,7 @@ class profiles::puppet::master (
     path    => "${::settings::confdir}/puppet.conf",
     section => 'main',
     setting => 'basemodulepath',
-    value   => $profiles::puppet::params::basemodulepath,
+    value   => $profile::puppet::params::basemodulepath,
     notify  => Service['pe-httpd'],
   }
 
@@ -100,7 +100,7 @@ class profiles::puppet::master (
     file { '/root/.ssh/config':
       ensure => present,
       mode => '600',
-      source => 'puppet:///modules/profiles/ssh_master_config',
+      source => 'puppet:///modules/profile/ssh_master_config',
     }
   } else {
     ## Create an SSH keypair

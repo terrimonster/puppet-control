@@ -2,7 +2,7 @@
 # defaults for your profile::puppet::*
 # classes. This makes your code less messy
 # and follows puppet best practices.
-class profiles::puppet::params {
+class profile::puppet::params {
 
   $remote = 'git@github.com:terrimonster/puppet-control.git'
 
