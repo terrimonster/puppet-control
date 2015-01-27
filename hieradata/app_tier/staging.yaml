@@ -1,0 +1,10 @@
+---
+nginx_locations:
+  media:
+    location: '/media/location'
+    location_alias: '/media/location/alias'
+    vhost: 'media.cfpb.com'
+  app:
+    location: '/app/location'
+    location_alias: 'app/location/alias'
+    vhost: 'app.cfpb.com'

@@ -1,14 +1,5 @@
 #!/bin/bash
 
-## Use the control repo for bootstrapping
-mkdir -p /etc/puppetlabs/puppet/environments
-
-/opt/puppet/bin/puppet resource ini_setting environmentpath ensure=present \
-  path=/etc/puppetlabs/puppet/puppet.conf section=main \
-  setting=environmentpath value=/etc/puppetlabs/puppet/environments
-
-service pe-httpd restart
-
 /opt/puppet/bin/puppet module install zack-r10k --modulepath \
   /etc/puppetlabs/puppet/modules --ignore-requirements
 
