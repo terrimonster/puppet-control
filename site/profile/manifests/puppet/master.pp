@@ -4,7 +4,7 @@ class profile::puppet::master (
     $environmentpath = "${::settings::confdir}/environments",
     $deploy_pub_key = "",
     $deploy_private_key = "",
-    $r10k_version = '1.3.4',
+    $r10k_version = '1.4.1',
 ) inherits profile::puppet::params {
   validate_string($remote)
   validate_bool($hiera_eyaml,$autosign)
@@ -18,12 +18,12 @@ class profile::puppet::master (
       'nodes/%{clientcert}',
       'app_tier/%{app_tier}',
       'env/%{environment}',
-      'global',
+      'common',
     ],
     datadir   => $profile::puppet::params::hieradir,
     backends  => $backends,
     eyaml     => $hiera_eyaml,
-    notify    => Service['pe-httpd'],
+    notify    => Service['pe-puppetserver'],
   }
 
   class { 'r10k':
@@ -38,7 +38,7 @@ class profile::puppet::master (
     purgedirs         => [$environmentpath],
     manage_modulepath => false,
     mcollective       => true,
-    notify            => Service['pe-httpd'],
+    notify            => Service['pe-puppetserver'],
   }
 
   if $autosign {
@@ -61,7 +61,7 @@ class profile::puppet::master (
     section => 'main',
     setting => 'basemodulepath',
     value   => $profile::puppet::params::basemodulepath,
-    notify  => Service['pe-httpd'],
+    notify  => Service['pe-puppetserver'],
   }
 
   ini_setting { 'environmentpath':
@@ -70,12 +70,7 @@ class profile::puppet::master (
     section => 'main',
     setting => 'environmentpath',
     value   => $environmentpath,
-    notify  => Service['pe-httpd'],
-  }
-
-  service { 'pe-httpd':
-    ensure => 'running',
-    enable => true,
+    notify  => Service['pe-puppetserver'],
   }
 
   file { '/root/.ssh':
