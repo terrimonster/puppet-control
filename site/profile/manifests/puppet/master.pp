@@ -106,12 +106,4 @@ class profile::puppet::master (
       require => File['/root/.ssh'],
     }
   }
-
-  ## Firewall rules for PE
-  firewall { '100 allow puppet':
-    port   => [8140, 61613, 443],
-    proto  => 'tcp',
-    action => 'accept',
-  }
-
 }
