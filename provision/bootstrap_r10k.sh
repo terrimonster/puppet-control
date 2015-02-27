@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rm -rf /etc/puppetlabs/puppet/environments/production
+
 /opt/puppet/bin/puppet module install zack-r10k --modulepath \
   /etc/puppetlabs/puppet/modules --ignore-requirements
 
@@ -13,7 +15,7 @@ case $::settings::server {
   }
 }
 class { 'r10k':
-  version => '1.3.4',
+  version => '1.4.1',
   remote => \$remote,
 }
 EOM

@@ -49,12 +49,6 @@ class profile::puppet::master (
     }
   }
 
-  file { $environmentpath :
-    ensure => 'directory',
-  }
-
-
-
   ini_setting { 'basemodulepath':
     ensure  => 'present',
     path    => "${::settings::confdir}/puppet.conf",
@@ -73,37 +67,4 @@ class profile::puppet::master (
     notify  => Service['pe-puppetserver'],
   }
 
-  file { '/root/.ssh':
-    ensure => 'directory',
-    mode   => '0700',
-  }
-
-  if $deploy_pub_key {
-    # private key
-    file { '/root/.ssh/r10k-control-repo-id_rsa':
-      ensure  => present,
-      mode    => '600',
-      content => $deploy_private_key,
-    }
-    # private key
-    file { '/root/.ssh/r10k-control-repo-id_rsa.pub':
-      ensure  => present,
-      mode    => '600',
-      content => $deploy_pub_key,
-    }
-    # ssh config
-    file { '/root/.ssh/config':
-      ensure => present,
-      mode => '600',
-      source => 'puppet:///modules/profile/ssh_master_config',
-    }
-  } else {
-    ## Create an SSH keypair
-    exec { 'create_ssh_keys':
-      path    => [ '/usr/bin' ],
-      command => "ssh-keygen -f /root/.ssh/id_rsa -N ''",
-      creates => '/root/.ssh/id_rsa',
-      require => File['/root/.ssh'],
-    }
-  }
 }
