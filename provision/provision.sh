@@ -16,7 +16,8 @@ cat > /etc/hosts <<EOH
 127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain
 ::1 localhost localhost.localdomain localhost6 localhost6.localdomain
 192.168.137.10 xmaster.vagrant.vm xmaster puppet
-192.168.137.14 xagent.vagrant.vm xagent
+192.168.137.14 xagent1.vagrant.vm xagent1
+192.168.137.15 xagent2.vagrant.vm xagent2
 EOH
 /sbin/service iptables stop
 ## Download and extract the PE installer
