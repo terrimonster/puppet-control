@@ -18,7 +18,7 @@ cat > /etc/hosts <<EOH
 192.168.137.10 xmaster.vagrant.vm xmaster puppet
 192.168.137.14 xagent.vagrant.vm xagent
 EOH
-/sbin/service iptables stop
+
 ## Download and extract the PE installer
 cd /vagrant/provision/pe || (echo "/vagrant/provision/pe doesn't exist." && exit 1)
 if [ ! -f $FILENAME ]; then
