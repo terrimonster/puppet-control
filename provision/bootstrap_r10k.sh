@@ -25,5 +25,8 @@ echo "APPLYING R10K"
 
 /opt/puppet/bin/r10k deploy environment -p production --puppetfile \
   --verbose debug
+echo "Sleeping for 10 seconds while prod env is recognized"
+
+sleep 10
 
 /opt/puppet/bin/puppet agent -t

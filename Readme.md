@@ -46,6 +46,8 @@ Contains the scripts and files that are used to spin up the Vagrant VM. This is 
 
 If you want to avoid having to wait for PE to download during the provisioning process and you have the Puppet Enterprise tarball lying around, just copy it over to provision/pe and that step will be skipped.
 
+The provision/provision.sh script contains the PE version that will be installed. You'll need to change it to downgrade/upgrade as needed.
+
 ### reference/
 Reference materials for Puppet workflow.
 
@@ -125,6 +127,12 @@ is done for the role.
 
 Classification for vagrant nodes are done via the
 environment-specific `site.pp`
+
+#### Vagrant usage
+
+r10k on the vagrant xmaster uses the /vagrant mount as the remote. During the course of your testing, if you need to edit your files, you'll need to add and commit your changes (but don't push!) then use r10k to sync your code on your vagrant xmaster:
+
+r10k deploy environmnet -p <environment> --verbose
 
 ## Bootstrapping your Puppet Master
 
