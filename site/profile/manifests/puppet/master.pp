@@ -4,7 +4,7 @@ class profile::puppet::master (
     $environmentpath = "${::settings::confdir}/environments",
     $deploy_pub_key = "",
     $deploy_private_key = "",
-    $r10k_version = '1.3.4',
+    $r10k_version = '1.4.1',
 ) inherits profile::puppet::params {
   validate_string($remote)
   validate_bool($hiera_eyaml,$autosign)
@@ -18,12 +18,12 @@ class profile::puppet::master (
       'nodes/%{clientcert}',
       'app_tier/%{app_tier}',
       'env/%{environment}',
-      'global',
+      'common',
     ],
     datadir   => $profile::puppet::params::hieradir,
     backends  => $backends,
     eyaml     => $hiera_eyaml,
-    notify    => Service['pe-httpd'],
+    notify    => Service['pe-puppetserver'],
   }
 
   class { 'r10k':
@@ -38,7 +38,7 @@ class profile::puppet::master (
     purgedirs         => [$environmentpath],
     manage_modulepath => false,
     mcollective       => true,
-    notify            => Service['pe-httpd'],
+    notify            => Service['pe-puppetserver'],
   }
 
   if $autosign {
@@ -49,19 +49,13 @@ class profile::puppet::master (
     }
   }
 
-  file { $environmentpath :
-    ensure => 'directory',
-  }
-
-
-
   ini_setting { 'basemodulepath':
     ensure  => 'present',
     path    => "${::settings::confdir}/puppet.conf",
     section => 'main',
     setting => 'basemodulepath',
     value   => $profile::puppet::params::basemodulepath,
-    notify  => Service['pe-httpd'],
+    notify  => Service['pe-puppetserver'],
   }
 
   ini_setting { 'environmentpath':
@@ -70,53 +64,7 @@ class profile::puppet::master (
     section => 'main',
     setting => 'environmentpath',
     value   => $environmentpath,
-    notify  => Service['pe-httpd'],
-  }
-
-  service { 'pe-httpd':
-    ensure => 'running',
-    enable => true,
-  }
-
-  file { '/root/.ssh':
-    ensure => 'directory',
-    mode   => '0700',
-  }
-
-  if $deploy_pub_key {
-    # private key
-    file { '/root/.ssh/r10k-control-repo-id_rsa':
-      ensure  => present,
-      mode    => '600',
-      content => $deploy_private_key,
-    }
-    # private key
-    file { '/root/.ssh/r10k-control-repo-id_rsa.pub':
-      ensure  => present,
-      mode    => '600',
-      content => $deploy_pub_key,
-    }
-    # ssh config
-    file { '/root/.ssh/config':
-      ensure => present,
-      mode => '600',
-      source => 'puppet:///modules/profile/ssh_master_config',
-    }
-  } else {
-    ## Create an SSH keypair
-    exec { 'create_ssh_keys':
-      path    => [ '/usr/bin' ],
-      command => "ssh-keygen -f /root/.ssh/id_rsa -N ''",
-      creates => '/root/.ssh/id_rsa',
-      require => File['/root/.ssh'],
-    }
-  }
-
-  ## Firewall rules for PE
-  firewall { '100 allow puppet':
-    port   => [8140, 61613, 443],
-    proto  => 'tcp',
-    action => 'accept',
+    notify  => Service['pe-puppetserver'],
   }
 
 }

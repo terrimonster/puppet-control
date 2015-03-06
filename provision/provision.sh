@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PE_VERSION="3.3.2"
+PE_VERSION="3.7.2"
 
 ###########################################################
 ANSWERS=$1
@@ -42,24 +42,14 @@ else
   echo "/opt/puppet exists. Assuming it's already installed."
 fi
 
+## turning off iptables
+
+/sbin/service iptables stop
+
 ## Bootstrap the master
 if [ "$1" == 'master.txt' ]; then
 
   ## deploy keys
-
-  mkdir -p /root/.ssh
-
-  cp /vagrant/provision/keys/r10k-control-repo-id_rsa \
-    /root/.ssh/r10k-control-repo-id_rsa
-
-  cp /vagrant/provision/keys/r10k-control-repo-id_rsa.pub \
-    /root/.ssh/r10k-control-repo-id_rsa.pub
-
-  cp /vagrant/provision/keys/config /root/.ssh/config
-
-  ###
-  chmod 600 /root/.ssh/r10k*
-  chmod 600 /root/.ssh/config
 
   /vagrant/provision/bootstrap_r10k.sh
 
