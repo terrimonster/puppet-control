@@ -3,13 +3,6 @@ forge 'http://forge.puppetlabs.com'
 mod 'ntp',
   :git => 'https://github.com/puppetlabs/puppetlabs-ntp.git'
 
-mod 'apache',
-  :git => 'https://github.com/puppetlabs/puppetlabs-apache.git'
-
-mod 'tomcat',
-  :git => 'https://github.com/puppetlabs/puppetlabs-tomcat.git'
-
-
 ###############################################################################
 # General dependencies
 
@@ -54,8 +47,6 @@ mod 'r10k',
 mod 'java',
   :git => 'https://github.com/puppetlabs/puppetlabs-java.git'
 
-mod 'staging',
-  :git => 'https://github.com/nanliu/puppet-staging.git'
 
 mod 'epel',
   :git => 'https://github.com/stahnma/puppet-module-epel.git'
