@@ -50,8 +50,6 @@ fi
 ## Bootstrap the master
 if [ "$1" == 'master.txt' ]; then
 
-  ## deploy keys
-
   /vagrant/provision/bootstrap_r10k.sh
 
   echo "All done! Now ssh in using vagrant ssh xmaster and sudo to root!"
