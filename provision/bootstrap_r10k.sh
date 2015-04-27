@@ -15,7 +15,7 @@ case $::settings::server {
   }
 }
 class { 'r10k':
-  version => '1.4.1',
+  version => '1.5.1',
   remote => \$remote,
 }
 EOM

@@ -1,10 +1,11 @@
 #!/bin/bash
 
-PE_VERSION="3.7.2"
+PE_VERSION="3.8.0"
 
 ###########################################################
 ANSWERS=$1
-PE_URL="https://s3.amazonaws.com/pe-builds/released/${PE_VERSION}/puppet-enterprise-${PE_VERSION}-el-6-x86_64.tar.gz"
+#puppet-enterprise-3.8.0-rc0-622-g2d49fbb-el-6-x86_64
+PE_URL="https://s3.amazonaws.com/pe-builds/released/${PE_VERSION}/puppet-enterprise-${PE_VERSION}-rc0-622-g2d49fbb-el-6-x86_64.tar.gz"
 FILENAME=${PE_URL##*/}
 DIRNAME=${FILENAME%*.tar.gz}
 
