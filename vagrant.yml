@@ -17,8 +17,8 @@ nodes:
     synced_folders:
       - host: .
         guest: /vagrant
-  xagent1:
-    hostname: xagent1.vagrant.vm
+  xagent:
+    hostname: xagent.vagrant.vm
     box: puppetlabs/centos-6.6-64-nocm
     memory: 512
     cpus: 1

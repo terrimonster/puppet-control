@@ -44,16 +44,4 @@ class profile::gitlab {
     refreshonly => true,
   }
 
-  ## Firewall rules for Gitlab
-  firewall { '100 allow http and https access':
-    port   => [80, 443],
-    proto  => 'tcp',
-    action => 'accept',
-  }
-
-  firewall { '110 allow ssh':
-    port   => '22',
-    proto  => 'tcp',
-    action => 'accept',
-  }
 }
