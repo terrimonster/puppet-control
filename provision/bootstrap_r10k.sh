@@ -8,10 +8,9 @@ else
   MODPATH='/etc/puppetlabs/puppet/environments/production/site'
 fi
 
-rm -rf /etc/puppetlabs/puppet/environments/production
-
 /opt/puppet/bin/puppet apply -e 'include profile::puppet::r10k' --modulepath=$MODPATH
 
+rm -rf /etc/puppetlabs/puppet/environments/production
 
 /opt/puppet/bin/r10k deploy environment -p production --puppetfile \
   --verbose debug
