@@ -25,6 +25,11 @@ nodes:
     networks:
       - private_network:
           ip: 192.168.137.14
+    provisioners:
+      - shell:
+          path: provision/provision.sh
+          arguments:
+            - value: agent.txt
     synced_folders:
       - host: .
         guest: /vagrant

@@ -19,38 +19,45 @@ cat > /etc/hosts <<EOH
 192.168.137.14 xagent.vagrant.vm xagent
 EOH
 
-## Download and extract the PE installer
-cd /vagrant/provision/pe || (echo "/vagrant/provision/pe doesn't exist." && exit 1)
-if [ ! -f $FILENAME ]; then
-  curl -O ${PE_URL} || (echo "Failed to download ${PE_URL}" && exit 1)
-else
-  echo "${FILENAME} already present"
-fi
-
-if [ ! -d ${DIRNAME} ]; then
-  tar zxf ${FILENAME} || (echo "Failed to extract ${FILENAME}" && exit 1)
-else
-  echo "${DIRNAME} already present"
-fi
-
-## Install PE with a specified answer file
-if [ ! -d '/opt/puppet/' ]; then
-  # Assume puppet isn't installed
-  /vagrant/provision/pe/${DIRNAME}/puppet-enterprise-installer \
-    -a /vagrant/provision/pe/answers/${ANSWERS}
-else
-  echo "/opt/puppet exists. Assuming it's already installed."
-fi
-
-## turning off iptables
-
+# turn off iptables
 /sbin/service iptables stop
 
-## Bootstrap the master
+# download and full install only happens on master
 if [ "$1" == 'master.txt' ]; then
+  ## Download and extract the PE installer
+  cd /vagrant/provision/pe || (echo "/vagrant/provision/pe doesn't exist." && exit 1)
+  if [ ! -f $FILENAME ]; then
+    curl -O ${PE_URL} || (echo "Failed to download ${PE_URL}" && exit 1)
+  else
+    echo "${FILENAME} already present"
+  fi
+
+  if [ ! -d ${DIRNAME} ]; then
+    tar zxf ${FILENAME} || (echo "Failed to extract ${FILENAME}" && exit 1)
+  else
+    echo "${DIRNAME} already present"
+  fi
+
+  ## Install PE with a specified answer file
+  if [ ! -d '/opt/puppet/' ]; then
+    # Assume puppet isn't installed
+    /vagrant/provision/pe/${DIRNAME}/puppet-enterprise-installer \
+      -a /vagrant/provision/pe/answers/${ANSWERS}
+  else
+    echo "/opt/puppet exists. Assuming it's already installed."
+  fi
+
+
+  ## Bootstrap the master
 
   /vagrant/provision/bootstrap_r10k.sh
 
   echo "All done! Now ssh in using vagrant ssh xmaster and sudo to root!"
+
+else
+
+  curl -k https://xmaster.vagrant.vm:8140/packages/current/install.bash  | bash
+
+  echo "Finished! Access this instance using 'vagrant ssh xagent', sudo to root!"
 
 fi
