@@ -145,6 +145,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       # Special case provider-specifc settings
       # NOTE: memory and cpus are common enough settings that I don't treat them as
       #       provider-specific in the .yml files
+      # Add NAT DNS options to speed up networking. See VirtualBox documentation
+      # for more information on those options.
       node.vm.provider 'virtualbox' do |vb|
         vb.customize [ 'modifyvm', :id, '--memory', node_details['memory'] ]
         vb.customize [ 'modifyvm', :id, '--cpus', node_details['cpus'] ]
