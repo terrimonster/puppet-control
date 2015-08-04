@@ -2,6 +2,7 @@
 # defaults for your profile::puppet::*
 # classes. This makes your code less messy
 # and follows puppet best practices.
+# $remote = 'git@github.com:terrimonster/puppet-control.git'
 class profile::puppet::params {
   $hieradir = '"/etc/puppetlabs/puppet/environments/%{::environment}/hieradata"'
   $basemodulepath = "${::settings::confdir}/modules:/opt/puppet/share/puppet/modules"
@@ -11,7 +12,7 @@ class profile::puppet::params {
       $remote = '/vagrant'
     }
     default: {
-      $remote = 'git@github.com:terrimonster/puppet-control.git'
+      $remote = 'https://github.com/marsmensch/puppet-control.git'
     }
   }
 }

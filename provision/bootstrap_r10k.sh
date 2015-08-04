@@ -1,4 +1,6 @@
 #!/bin/bash
+PUPPETBIN="$(which puppet)"
+R10KBIN="$(which r10k)"
 
 HOSTNAME=`hostname`
 
@@ -8,11 +10,11 @@ else
   MODPATH='/etc/puppetlabs/puppet/environments/production/site'
 fi
 
-/opt/puppet/bin/puppet apply -e 'include profile::puppet::r10k' --modulepath=$MODPATH
+${PUPPETBIN} apply -e 'include profile::puppet::r10k' --modulepath=$MODPATH
 
 rm -rf /etc/puppetlabs/puppet/environments/production
 
-/opt/puppet/bin/r10k deploy environment -p production --puppetfile \
+${R10KBIN} deploy environment -p production --puppetfile \
   --verbose debug
 
-/opt/puppet/bin/puppet agent -t
+${PUPPETBIN} agent -t
