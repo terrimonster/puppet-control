@@ -4,7 +4,7 @@ nodes:
   xmaster:
     hostname: xmaster.vagrant.vm
     box: puppetlabs/centos-6.6-64-nocm
-    memory: 4096
+    memory: 2048
     cpus: 1
     networks:
       - private_network:

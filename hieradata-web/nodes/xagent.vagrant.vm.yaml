@@ -1,0 +1,3 @@
+---
+classes: role::base
+profile::puppet::agent::master: xmaster.vagrant.vm
