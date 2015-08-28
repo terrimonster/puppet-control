@@ -1,5 +1,0 @@
----
-message: "This is our Department A yaml file"
-ntpservers:
- - north-america.pool.ntp.org
- - ntp.lucier.net

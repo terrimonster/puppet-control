@@ -1,3 +1,0 @@
----
-classes: role::puppet::master
-profile::puppet::master::autosign: true
