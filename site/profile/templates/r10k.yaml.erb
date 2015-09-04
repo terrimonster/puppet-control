@@ -1,4 +1,15 @@
 sources:
-  mysource:
+  main:
     remote: <%= @remote %>
     basedir: <%= @environmentpath %>
+    prefix: false
+
+  dept1:
+    remote: https://github.com/marsmensch/hieradata-dept1.git
+    basedir: '/etc/puppetlabs/code/hieradata'
+    prefix: true    
+    
+  dept2:
+    remote: https://github.com/marsmensch/hieradata-dept2.git
+    basedir: '/etc/puppetlabs/code/hieradata'  
+    prefix: true   

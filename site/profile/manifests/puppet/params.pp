@@ -5,7 +5,7 @@
 # $remote = 'git@github.com:terrimonster/puppet-control.git'
 class profile::puppet::params {
   $hieradir = '"/etc/puppetlabs/puppet/environments/%{::environment}/hieradata"'
-  $basemodulepath = "${::settings::confdir}/modules:/opt/puppet/share/puppet/modules"
+  $basemodulepath = "${::settings::confdir}/modules:/opt/puppetlabs/share/puppet/modules"
   $environmentpath = "${::settings::confdir}/environments"
   case $::settings::server {
     'xmaster.vagrant.vm': {

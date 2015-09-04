@@ -16,6 +16,12 @@ class profile::puppet::master (
 
   class { 'hiera':
     hierarchy => [
+      'dept1_%{::environment}/nodes/%{::fqdn}',
+      'dept2_%{::environment}/nodes/%{::fqdn}',
+      'dept1_%{::environment}/tier/%{::tieringlevel}',
+      'dept2_%{::environment}/tier/%{::tieringlevel}',
+      'dept1_%{::environment}/common',
+      'dept2_%{::environment}/common ',
       'nodes/%{clientcert}',
       'app_tier/%{app_tier}',
       'env/%{environment}',
