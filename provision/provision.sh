@@ -1,10 +1,11 @@
 #!/bin/bash
 
 PE_VERSION="2015.2.2"
+EL_VER="7"
 
 ###########################################################
 ANSWERS=$1
-PE_URL="https://pm.puppetlabs.com/puppet-enterprise/${PE_VERSION}/puppet-enterprise-${PE_VERSION}-el-6-x86_64.tar.gz"
+PE_URL="https://pm.puppetlabs.com/puppet-enterprise/${PE_VERSION}/puppet-enterprise-${PE_VERSION}-el-${EL_VER}-x86_64.tar.gz"
 FILENAME=${PE_URL##*/}
 DIRNAME=${FILENAME%*.tar.gz}
 
