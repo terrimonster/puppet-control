@@ -98,6 +98,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         end
       end
 
+      # Disable rsync folders to shave some time off `vagrant up`
+      # The rsync isn't necessary because the shared vboxsf filesystem is being
+      # used.
+      node.vm.synced_folder '.', '/home/vagrant/sync', :disabled => true
+
       # configure synced folders
       synced_folders = node_details['synced_folders']
       synced_folders && synced_folders.each do |synced_folder|
