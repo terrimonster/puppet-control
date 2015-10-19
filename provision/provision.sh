@@ -20,8 +20,10 @@ cat > /etc/hosts <<EOH
 192.168.137.14 xagent.vagrant.vm xagent
 EOH
 
-# turn off iptables
-/sbin/service iptables stop
+# Make sure the firewall is turned off
+if systemctl status iptables.service > /dev/null; then
+  systemctl stop iptables.service
+fi
 
 # download and full install only happens on master
 if [ "$1" == 'master.txt' ]; then
