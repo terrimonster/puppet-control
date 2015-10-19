@@ -9,7 +9,7 @@ FILENAME=${PE_URL##*/}
 DIRNAME=${FILENAME%*.tar.gz}
 
 ## A reasonable PATH
-echo "export PATH=$PATH:/usr/local/bin:/opt/puppet/bin" >> /etc/bashrc
+echo "export PATH=/opt/puppetlabs/bin:/usr/local/bin:$PATH" >> /etc/bashrc
 
 ## Add host entries for each system
 cat > /etc/hosts <<EOH
