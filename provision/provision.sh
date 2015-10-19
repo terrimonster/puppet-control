@@ -4,7 +4,7 @@ PE_VERSION="3.8.0"
 
 ###########################################################
 ANSWERS=$1
-PE_URL="https://s3.amazonaws.com/pe-builds/released/${PE_VERSION}/puppet-enterprise-${PE_VERSION}-el-6-x86_64.tar.gz"
+PE_URL="https://pm.puppetlabs.com/puppet-enterprise/${PE_VERSION}/puppet-enterprise-${PE_VERSION}-el-6-x86_64.tar.gz"
 FILENAME=${PE_URL##*/}
 DIRNAME=${FILENAME%*.tar.gz}
 
@@ -27,7 +27,8 @@ if [ "$1" == 'master.txt' ]; then
   ## Download and extract the PE installer
   cd /vagrant/provision/pe || (echo "/vagrant/provision/pe doesn't exist." && exit 1)
   if [ ! -f $FILENAME ]; then
-    curl -O ${PE_URL} || (echo "Failed to download ${PE_URL}" && exit 1)
+    echo "Downloading: ${PE_URL} ..."
+    (curl -L ${PE_URL} > ${FILENAME}) || (echo "Failed to download ${PE_URL}" && exit 1)
   else
     echo "${FILENAME} already present"
   fi
