@@ -174,3 +174,7 @@ That's it! Now you have a full vagrant test environment that mirrors what you ha
 This makes use of Greg Sarjeant's [data-driven-vagrantfile](https://github.com/gsarjeant/data-driven-vagrantfile)
 
 No Vagrant plugins are required.
+
+The `vagrant-vbguest` plugin is recommended because the upstream `centos` boxes
+do not ship with guest additions installed in the base box.  Install the plugin
+with: `vagrant plugin install vagrant-vbguest`.
