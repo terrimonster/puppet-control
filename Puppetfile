@@ -3,21 +3,11 @@ forge 'http://forge.puppetlabs.com'
 mod 'ntp',
   :git => 'https://github.com/puppetlabs/puppetlabs-ntp.git'
 
-mod 'apache',
-  :git => 'https://github.com/puppetlabs/puppetlabs-apache.git'
-
-mod 'tomcat',
-  :git => 'https://github.com/puppetlabs/puppetlabs-tomcat.git'
-
-
 ###############################################################################
 # General dependencies
 
 mod 'stdlib',
   :git => 'https://github.com/puppetlabs/puppetlabs-stdlib.git'
-
-mod 'firewall',
-  :git => 'https://github.com/puppetlabs/puppetlabs-firewall.git'
 
 mod 'inifile',
   :git => 'https://github.com/puppetlabs/puppetlabs-inifile.git'
@@ -34,9 +24,6 @@ mod 'ruby',
 mod 'gcc',
   :git => 'https://github.com/puppetlabs/puppetlabs-gcc.git'
 
-mod 'pe_gem',
-  :git => 'https://github.com/puppetlabs/puppetlabs-pe_gem.git'
-
 mod 'vcsrepo',
   :git => 'https://github.com/puppetlabs/puppetlabs-vcsrepo.git'
 
@@ -44,12 +31,13 @@ mod 'git',
   :git => 'https://github.com/puppetlabs/puppetlabs-git.git'
 
 mod 'make',
-  :git => 'https://github.com/Element84/puppet-make.git'
+  :git => 'https://github.com/croddy/puppet-make.git'
 
-# Puppetforge modules
+mod 'pe_gem',
+  :git => 'https://github.com/puppetlabs/puppetlabs-pe_gem.git'
+
 mod 'r10k',
-  :git => 'https://github.com/acidprime/r10k.git',
-  :ref => 'v2.2.1'
+  :git => 'https://github.com/acidprime/r10k.git'
 
 mod 'java',
   :git => 'https://github.com/puppetlabs/puppetlabs-java.git'
