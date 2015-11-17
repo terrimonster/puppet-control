@@ -439,6 +439,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.1)
+    vagrant-wrapper (2.0.3)
     websocket (1.2.2)
 
 PLATFORMS
@@ -470,6 +471,7 @@ DEPENDENCIES
   simplecov-console
   travis
   travis-lint
+  vagrant-wrapper
 
 BUNDLED WITH
    1.10.6
