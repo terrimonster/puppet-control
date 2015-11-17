@@ -77,6 +77,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Define vagrant VMs for each node defined in vagrant.yml
   nodes.each do |node_name, node_details|
     config.vm.define node_name do |node|
+      boot_timeout = 2000
       # configure box name and url (if not a vagrant cloud box)
       box_name = "#{node_details['box']}"
       node.vm.box = "#{box_name}"
