@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PE_VERSION="2015.2.2"
+PE_VERSION="2015.2.3"
 EL_VER="7"
 
 ###########################################################
@@ -21,8 +21,8 @@ cat > /etc/hosts <<EOH
 EOH
 
 # Make sure the firewall is turned off
-if systemctl status iptables.service > /dev/null; then
-  systemctl stop iptables.service
+if systemctl status firewalld > /dev/null; then
+  systemctl stop firewalld
 fi
 
 # download and full install only happens on master
