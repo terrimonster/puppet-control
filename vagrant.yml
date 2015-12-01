@@ -1,9 +1,9 @@
 boxes:
-  centos/7: "centos/7"
+  puppetlabs/centos-7.0-64-nocm: "puppetlabs/centos-7.0-64-nocm"
 nodes:
   xmaster:
     hostname: xmaster.vagrant.vm
-    box: centos/7
+    box: puppetlabs/centos-7.0-64-nocm
     memory: 4096
     cpus: 1
     networks:
@@ -19,7 +19,7 @@ nodes:
         guest: /vagrant
   xagent:
     hostname: xagent.vagrant.vm
-    box: centos/7
+    box: puppetlabs/centos-7.0-64-nocm
     memory: 512
     cpus: 1
     networks:
