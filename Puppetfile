@@ -48,4 +48,13 @@ mod 'staging',
 mod 'epel',
   :git => 'https://github.com/stahnma/puppet-module-epel.git'
 
+mod 'archive',
+  :git => 'https://github.com/voxpupuli/puppet-archive.git'
+
+mod 'sysctl',
+  :git => 'https://github.com/fiddyspence/puppet-sysctl.git'
+
+mod 'limits',
+  :git => 'https://github.com/saz/puppet-limits.git'
+
 ###############################################################################
