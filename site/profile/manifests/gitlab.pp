@@ -18,7 +18,7 @@ class profile::gitlab {
   package { 'gitlab':
     ensure   => 'present',
     provider => 'rpm',
-    source   => 'https://downloads-packages.s3.amazonaws.com/centos-6.5/gitlab-7.0.0_omnibus-1.el6.x86_64.rpm',
+    source   => 'https://downloads-packages.s3.amazonaws.com/centos-6.5/gitlab-7.0.0_omnibus-1.el7.x86_64.rpm',
     require  => [ Package['openssh-server'], Package['postfix'] ],
   }
 

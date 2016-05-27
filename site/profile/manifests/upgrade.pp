@@ -4,7 +4,7 @@ class profile::upgrade (
 ){
   yumrepo { 'puppetlabs-pepackages':
     ensure    => 'present',
-    baseurl   => "https://${puppetmaster}:8140/packages/${version}/el-6-x86_64",
+    baseurl   => "https://${puppetmaster}:8140/packages/${version}/el-7-x86_64",
     descr     => 'Puppet Labs PE Packages  - ',
     enabled   => '1',
     gpgcheck  => '1',

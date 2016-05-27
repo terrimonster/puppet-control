@@ -17,3 +17,4 @@ install_log*
 puppet-enterprise-*
 provision/keys
 /modules
+/.pe_build

@@ -1,0 +1,14 @@
+---
+vms:
+- name: master
+  box: slalompdx/centos-7
+  roles:
+  - pe-puppet-master
+- name: pe_agent
+  box: slalompdx/centos-7
+  roles:
+  - pe-puppet-agent
+- name: agent
+  box: slalompdx/centos-7-puppet4
+  roles:
+  - puppet-agent
