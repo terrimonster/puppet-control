@@ -51,35 +51,25 @@ The provision/provision.sh script contains the PE version that will be installed
 ### reference/
 Reference materials for Puppet workflow.
 
-### vagrant.yml
+### config/
 
-Gives instructions to Vagrantfile regarding what Vagrant box you want to use, and what virtual machines are available for provisioning, and what their options should be. By default I'm using centos 6.6, but if you want to use another box, you'd change that here.
+Contains configuration options to customize oscar.
 
 ## How to use it
 
-There's two systems in this environment:
-
-| Name    | Description                  | Address        | PE Console URL                                                  |
-| ------- | ---------------------------- | -------------- | -------------------------------------------------------- |
-| xmaster | The PE Master                | 192.168.137.10 | [https://192.168.137.10](https://192.168.137.10)         |
-| xagent  | Example agent (unclassified) | 192.168.137.14 |                                                          |
+There are three vagrant nodes - PE master, PE agent, and a standalone masterless puppet agent.
 
 The default credentials for the PE Master Console are:
 
 Username: `admin`
 
-Password: `password`
+Password: `puppetlabs`
 
 ### Summary of procedure
 
-1. Bring up instances
-2. Push local control repository to Git server
-3. Experiment
-
-**Bring up all the nodes in the Vagrant environment:**
 
 ```
-vagrant up
+vagrant up <node>
 ```
 
 This will take some time to provision.
@@ -93,13 +83,11 @@ Stuff included:
 * Roles and Profiles
 * Hiera
 * Git workflow
-* Optionally, [hiera-eyaml](https://github.com/TomPoulton/hiera-eyaml)
-* [r10k](https://github.com/adrienthebo/r10k)
 
 Once everything is provisioned as you need it, you can ssh into the instance:
 
 ```
-vagrant ssh xmaster
+vagrant ssh master
 ```
 
 You will be logged in as user vagrant. Please sudo to root if you need to run puppet.
@@ -107,74 +95,21 @@ You will be logged in as user vagrant. Please sudo to root if you need to run pu
 
 ### 1. Install Virtualbox
 
-This vagrant setup requires one of the following versions: 4.0, 4.1, 4.2. The latest Virtualbox version is 4.3
+Latest version works fine
 
 ### 2. Install Vagrant
 
-Latest version, 1.5.6 when this repo was created, will work fine.
+Latest version is fine
 
+### 3. Install oscar plugin
 
-### Provisioning Summary
+```
+vagrant plugin install oscar
+```
 
-The Vagrant provisioning will install Puppet Enterprise with the appropriate
-configuration for each system.  The Puppet Master will be configured and manged
-using Puppet - you can look at the `role::puppet::master` to see what's going
-on.  Basically, Puppet is configured for environments, r10k is installed and
-configured, and Hiera is installed and configured.  During provisioning, the
-provided control repository is cloned to the PE master and a local `puppet apply`
-is done for the role.
+### TO DO
 
+* Use /vagrant mounted directory on PE master as an environment directory for better full-stack testing
+* Integrate control-spec-helper for testing
+* Develop spec/smoke tests
 
-Classification for vagrant nodes are done via the
-environment-specific `site.pp`
-
-#### Vagrant usage
-
-r10k on the vagrant xmaster uses the /vagrant mount as the remote. During the course of your testing, if you need to edit your files, you'll need to add and commit your changes (but don't push!) then use r10k to sync your code on your vagrant xmaster:
-
-r10k deploy environmnet -p <environment> --verbose
-
-## Bootstrapping your Puppet Master
-
-Now that you have your basic puppet code all ready to go and you want to launch this on your live master...
-
-### 1. rm -rf .git
-
-This removes the reference to this repository. But now you'll need to get this into *your* repo.
-
-### 2. Create your puppet-control git repo
-
-Best practice is to create a "puppet" group where all of your puppet-related code will reside. Then create a puppet-control repo in that group. If you're using gitlab/stash/github, it'll give you instructions on how to complete getting the code to your new repo.
-
-### 3. Make production your default branch
-
-We're using r10k here to convert branches to environments on your Puppet master. So instead of master, it's production. There are many methods to make production your default branch, so I leave that up to the user and their proficiency with google.
-
-### 4. Replace the repo URL for r10k remote
-
-You'll have an URL like "git@github.com:terrimonster/puppet-control.git". Paste that in two places:
-
-provision/bootstrap_r10k.sh
-site/profile/manifests/puppet/params.pp
-
-For both, you'll be replacing the git URL for this repo, in the default case statement. The first script bootstraps r10k for vagrant and your live Puppet master. The second is to correct configuration drift for the long-term.
-
-### 5. Deploy keys or ssh keys
-
-You'll need to give your puppet master permission to access your repository. Use either deploy keys or ssh keys, whatever is easiest for you.
-
-### 6. Copy the bootstrap_r10k.sh script to your Master
-
-After you've installed puppet on your puppet master, scp the script, copy and paste, however you want to do it. I recommend putting it in the /tmp directory. Then just run the script to bootstrap r10k and sync production.
-
-That's it! Now you have a full vagrant test environment that mirrors what you have in your live infrastructure!
-
-## Other
-
-This makes use of Greg Sarjeant's [data-driven-vagrantfile](https://github.com/gsarjeant/data-driven-vagrantfile)
-
-No Vagrant plugins are required.
-
-The `vagrant-vbguest` plugin is recommended because the upstream `centos` boxes
-do not ship with guest additions installed in the base box.  Install the plugin
-with: `vagrant plugin install vagrant-vbguest`.
